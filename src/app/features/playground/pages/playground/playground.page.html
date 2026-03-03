@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>UI Playground</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Toast: mandarlo al body para que no tape ion-content -->
+  <p-toast appendTo="body"></p-toast>
+
+  <p-card header="PrimeNG + Ionic (Playground)">
+    <p class="muted">
+      Si puedes escribir, seleccionar, abrir datepicker, abrir dialog y lanzar toast, quedó OK.
+    </p>
+
+    <p-divider></p-divider>
+
+    <label class="field-label">p-inputText</label>
+    <input pInputText type="text" [(ngModel)]="name" placeholder="Escribe tu nombre" class="w-100" />
+
+    <div class="spacer"></div>
+
+    <label class="field-label">p-select</label>
+    <p-select
+      class="w-100"
+      [options]="categories"
+      [(ngModel)]="selectedCategory"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Elige una categoría"
+      [showClear]="true"
+      appendTo="body"
+    ></p-select>
+
+    <div class="spacer"></div>
+
+    <label class="field-label">p-datepicker</label>
+    <p-datepicker
+      class="w-100"
+      [(ngModel)]="selectedDate"
+      [showIcon]="true"
+      dateFormat="yy-mm-dd"
+      placeholder="Selecciona una fecha"
+      appendTo="body"
+    ></p-datepicker>
+
+    <div class="spacer"></div>
+
+    <div class="row">
+      <button pButton type="button" label="Toast" icon="pi pi-check" (click)="showToast()"></button>
+      <button pButton type="button" label="Dialog" icon="pi pi-window-maximize" (click)="openDialog()"></button>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Debug: confirma que ngModel cambia -->
+    <div class="debug">
+      <div><strong>name:</strong> {{ name }}</div>
+      <div><strong>category:</strong> {{ selectedCategory }}</div>
+      <div><strong>date:</strong> {{ selectedDate | json }}</div>
+    </div>
+  </p-card>
+
+  <p-dialog
+    header="PrimeNG Dialog"
+    [(visible)]="showDialog"
+    [modal]="true"
+    [dismissableMask]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [baseZIndex]="20000"
+    appendTo="body"
+    [style]="{ width: 'min(92vw, 420px)' }"
+  >
+    <p class="muted">Si esto aparece y puedes cerrarlo, overlays OK.</p>
+    <div class="spacer"></div>
+    <button pButton type="button" label="Cerrar" icon="pi pi-times" (click)="showDialog = false"></button>
+  </p-dialog>
+</ion-content>

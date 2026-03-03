@@ -20,6 +20,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('../transacciones/transacciones.module').then((m) => m.TransaccionesModule),
       },
+      {
+        path: 'playground',
+        loadChildren: () =>
+          import('../playground/playground.module').then((m) => m.PlaygroundModule),
+      },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
