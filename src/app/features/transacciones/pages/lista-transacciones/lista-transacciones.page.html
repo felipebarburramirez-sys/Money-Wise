@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Transacciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Lista (MVP)</h2>
+
+  <ion-list>
+    <ion-item button *ngFor="let it of items" (click)="openDetail(it.id)">
+      <ion-label>
+        <h3>{{ it.title }}</h3>
+        <p>{{ it.amount | number }} COP</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

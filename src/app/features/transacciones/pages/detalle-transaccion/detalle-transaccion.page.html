@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/transacciones"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Detalle transacción</h2>
+  <p><strong>ID:</strong> {{ id }}</p>
+
+  <ion-button expand="block" (click)="goBack()">
+    Volver a lista
+  </ion-button>
+</ion-content>
