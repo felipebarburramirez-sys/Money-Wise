@@ -12,6 +12,63 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2>Dashboard (MVP)</h2>
-  <p>Parte 3: Tabs protegidos + Logout funcionando ✅</p>
+  <p-toast appendTo="body"></p-toast>
+
+  <ng-container *ngIf="!loading && resumen; else loadingTpl">
+    <div class="grid-cards">
+      <p-card header="Saldo actual">
+        <div class="metric">
+          <div class="value">{{ resumen.saldoActual | number:'1.0-0' }}</div>
+          <div class="hint">Balance general</div>
+        </div>
+      </p-card>
+
+      <p-card header="Ingresos (mes)">
+        <div class="metric">
+          <div class="value">{{ resumen.ingresosMes | number:'1.0-0' }}</div>
+          <div class="hint">Total ingresos del mes</div>
+        </div>
+      </p-card>
+
+      <p-card header="Gastos (mes)">
+        <div class="metric">
+          <div class="value">{{ resumen.gastosMes | number:'1.0-0' }}</div>
+          <div class="hint">Total gastos del mes</div>
+        </div>
+      </p-card>
+    </div>
+
+    <p-divider></p-divider>
+
+    <p-card header="Gastos por categoría (mes)">
+      <ng-container *ngIf="resumen.gastosPorCategoria.length > 0; else emptyTpl">
+        <div class="cat-list">
+          <div class="cat-row" *ngFor="let item of resumen.gastosPorCategoria">
+            <div class="left">
+              <div class="label">{{ item.label }}</div>
+              <div class="sub">{{ item.totalGastos | number:'1.0-0' }}</div>
+            </div>
+
+            <div class="right">
+              <div class="pct">{{ item.porcentaje | number:'1.0-0' }}%</div>
+              <p-progressBar
+                [value]="item.porcentaje"
+                [showValue]="false"
+              ></p-progressBar>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #emptyTpl>
+        <p class="muted">Aún no hay gastos este mes. Crea tu primera transacción 🙃</p>
+      </ng-template>
+    </p-card>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <p-card header="Cargando...">
+      <p class="muted">Calculando resumen financiero…</p>
+    </p-card>
+  </ng-template>
 </ion-content>

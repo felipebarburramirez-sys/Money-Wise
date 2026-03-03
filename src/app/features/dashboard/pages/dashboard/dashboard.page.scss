@@ -1,1 +1,50 @@
-/* MVP: sin estilos extra aún */
+.grid-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.metric .value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.metric .hint {
+  margin-top: 6px;
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+.muted {
+  opacity: 0.75;
+}
+
+.cat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cat-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.cat-row .label {
+  font-weight: 600;
+}
+
+.cat-row .sub {
+  opacity: 0.75;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.cat-row .pct {
+  text-align: right;
+  font-weight: 600;
+  margin-bottom: 6px;
+}

@@ -1,17 +1,36 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/transacciones"></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+        Volver
+      </ion-button>
     </ion-buttons>
+
     <ion-title>Detalle</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="confirmDelete()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Eliminar
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2>Detalle transacción</h2>
-  <p><strong>ID:</strong> {{ id }}</p>
+  <p-toast appendTo="body"></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 
-  <ion-button expand="block" (click)="goBack()">
-    Volver a lista
-  </ion-button>
+  <ng-container *ngIf="item">
+    <p-card header="Transacción">
+      <div class="kv">
+        <div><span class="k">Tipo:</span> <span class="v">{{ item.tipo }}</span></div>
+        <div><span class="k">Categoría:</span> <span class="v">{{ item.categoria }}</span></div>
+        <div><span class="k">Monto:</span> <span class="v">{{ item.monto | number:'1.0-0' }}</span></div>
+        <div><span class="k">Fecha:</span> <span class="v">{{ item.fecha | date:'medium' }}</span></div>
+        <div *ngIf="item.nota"><span class="k">Nota:</span> <span class="v">{{ item.nota }}</span></div>
+      </div>
+    </p-card>
+  </ng-container>
 </ion-content>

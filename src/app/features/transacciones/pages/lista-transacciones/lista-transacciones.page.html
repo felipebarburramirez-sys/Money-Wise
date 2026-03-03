@@ -1,18 +1,149 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Transacciones</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openCreate()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Nueva
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2>Lista (MVP)</h2>
+  <p-toast appendTo="body"></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 
-  <ion-list>
-    <ion-item button *ngFor="let it of items" (click)="openDetail(it.id)">
-      <ion-label>
-        <h3>{{ it.title }}</h3>
-        <p>{{ it.amount | number }} COP</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <p-card header="Filtros">
+    <div class="filters">
+      <div class="field">
+        <label>Búsqueda</label>
+        <input
+          pInputText
+          [(ngModel)]="q"
+          (ngModelChange)="applyFilters()"
+          placeholder="nota, monto, tipo..."
+        />
+      </div>
+
+      <div class="field">
+        <label>Tipo</label>
+        <p-select
+          [options]="tipos"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="tipo"
+          (ngModelChange)="applyFilters()"
+        ></p-select>
+      </div>
+
+      <div class="field">
+        <label>Categoría</label>
+        <p-select
+          [options]="categorias"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="categoria"
+          (ngModelChange)="applyFilters()"
+        ></p-select>
+      </div>
+    </div>
+  </p-card>
+
+  <div class="spacer"></div>
+
+  <p-card header="Lista">
+    <ng-container *ngIf="view.length > 0; else emptyTpl">
+      <div class="list">
+        <div class="row" *ngFor="let t of view; trackBy: trackById">
+          <div class="left" (click)="goDetalle(t)" role="button" tabindex="0">
+            <div class="top">
+              <span class="tag" [class.in]="t.tipo === 'INGRESO'" [class.out]="t.tipo === 'GASTO'">
+                {{ t.tipo }}
+              </span>
+              <span class="monto">{{ t.monto | number:'1.0-0' }}</span>
+            </div>
+
+            <div class="sub">
+              {{ t.categoria }} • {{ t.fecha | date:'mediumDate' }}
+              <span *ngIf="t.nota">• {{ t.nota }}</span>
+            </div>
+          </div>
+
+          <div class="right">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-text"
+              (click)="openEdit(t)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-text p-button-danger"
+              (click)="confirmDelete(t)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyTpl>
+      <p class="muted">No hay transacciones. Crea la primera con “Nueva”.</p>
+    </ng-template>
+  </p-card>
+
+  <p-dialog
+    header="{{ editId ? 'Editar transacción' : 'Nueva transacción' }}"
+    [(visible)]="showDialog"
+    [modal]="true"
+    [dismissableMask]="true"
+    [style]="{ width: '92vw', maxWidth: '520px' }"
+    (onHide)="closeDialog()"
+  >
+    <div class="form">
+      <div class="field">
+        <label>Tipo</label>
+        <p-select
+          [options]="TIPOS_TRANSACCION"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="formTipo"
+        ></p-select>
+      </div>
+
+      <div class="field">
+        <label>Categoría</label>
+        <p-select
+          [options]="CATEGORIAS"
+          optionLabel="label"
+          optionValue="key"
+          [(ngModel)]="formCategoria"
+        ></p-select>
+      </div>
+
+      <div class="field">
+        <label>Monto</label>
+        <p-inputNumber [(ngModel)]="formMonto" [min]="0" [useGrouping]="true"></p-inputNumber>
+      </div>
+
+      <div class="field">
+        <label>Fecha</label>
+        <p-datePicker [(ngModel)]="formFecha" [showIcon]="true"></p-datePicker>
+      </div>
+
+      <div class="field">
+        <label>Nota</label>
+        <textarea pTextarea rows="3" [(ngModel)]="formNota" placeholder="Opcional..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button pButton type="button" label="Cancelar" class="p-button-outlined" (click)="closeDialog()"></button>
+        <button pButton type="button" label="Guardar" icon="pi pi-check" (click)="save()"></button>
+      </div>
+    </div>
+  </p-dialog>
 </ion-content>

@@ -2,6 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TextareaModule } from 'primeng/textarea';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -10,6 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 import { MessageService } from 'primeng/api';
 
@@ -18,7 +23,7 @@ import { MessageService } from 'primeng/api';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
+    ProgressBarModule,
     ButtonModule,
     InputTextModule,
     SelectModule,
@@ -27,12 +32,15 @@ import { MessageService } from 'primeng/api';
     ToastModule,
     CardModule,
     DividerModule,
+    ConfirmDialogModule,
+    InputNumberModule,
+    TextareaModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
+    ProgressBarModule,
     ButtonModule,
     InputTextModule,
     SelectModule,
@@ -41,7 +49,10 @@ import { MessageService } from 'primeng/api';
     ToastModule,
     CardModule,
     DividerModule,
+    ConfirmDialogModule,
+    InputNumberModule,
+    TextareaModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class UiModule {}
