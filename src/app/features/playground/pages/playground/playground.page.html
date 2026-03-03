@@ -5,75 +5,92 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Toast: mandarlo al body para que no tape ion-content -->
   <p-toast appendTo="body"></p-toast>
 
-  <p-card header="PrimeNG + Ionic (Playground)">
+  <p-dialog header="Dialog OK" [(visible)]="showDialog" [modal]="true" [closable]="true" [dismissableMask]="true"
+    [style]="{ width: '90vw', maxWidth: '420px' }" (onHide)="closeDialog()">
+    <p>Si ves esto, el dialog funciona ✅</p>
+    <div class="actions">
+      <button pButton type="button" label="Cerrar" icon="pi pi-times" (click)="closeDialog()"></button>
+    </div>
+  </p-dialog>
+
+  <div class="spacer"></div>
+
+  <!-- =========================
+       Parte 2: Core Smoke Test
+       ========================= -->
+  <p-card header="Parte 2 (Core) - Smoke Test">
     <p class="muted">
-      Si puedes escribir, seleccionar, abrir datepicker, abrir dialog y lanzar toast, quedó OK.
+      Esto prueba: Auth (register/login/logout), Transacciones (CRUD mínimo), Analytics (saldo + mes + categorías),
+      y persistencia en localStorage.
     </p>
 
-    <p-divider></p-divider>
+    <div class="grid">
+      <div class="field">
+        <label>Register - Nombre</label>
+        <input pInputText [(ngModel)]="regNombre" placeholder="Nombre" />
+      </div>
 
-    <label class="field-label">p-inputText</label>
-    <input pInputText type="text" [(ngModel)]="name" placeholder="Escribe tu nombre" class="w-100" />
+      <div class="field">
+        <label>Register - Email</label>
+        <input pInputText [(ngModel)]="regEmail" placeholder="Email" />
+      </div>
 
-    <div class="spacer"></div>
+      <div class="field">
+        <label>Register - Password</label>
+        <input pInputText type="password" [(ngModel)]="regPass" placeholder="Password" />
+      </div>
 
-    <label class="field-label">p-select</label>
-    <p-select
-      class="w-100"
-      [options]="categories"
-      [(ngModel)]="selectedCategory"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Elige una categoría"
-      [showClear]="true"
-      appendTo="body"
-    ></p-select>
+      <div class="actions">
+        <button pButton type="button" label="Register" icon="pi pi-user-plus" (click)="doRegister()"></button>
+      </div>
 
-    <div class="spacer"></div>
+      <hr />
 
-    <label class="field-label">p-datepicker</label>
-    <p-datepicker
-      class="w-100"
-      [(ngModel)]="selectedDate"
-      [showIcon]="true"
-      dateFormat="yy-mm-dd"
-      placeholder="Selecciona una fecha"
-      appendTo="body"
-    ></p-datepicker>
+      <div class="field">
+        <label>Login - Email</label>
+        <input pInputText [(ngModel)]="loginEmail" placeholder="Email" />
+      </div>
 
-    <div class="spacer"></div>
+      <div class="field">
+        <label>Login - Password</label>
+        <input pInputText type="password" [(ngModel)]="loginPass" placeholder="Password" />
+      </div>
 
-    <div class="row">
-      <button pButton type="button" label="Toast" icon="pi pi-check" (click)="showToast()"></button>
-      <button pButton type="button" label="Dialog" icon="pi pi-window-maximize" (click)="openDialog()"></button>
+      <div class="actions">
+        <button pButton type="button" label="Login" icon="pi pi-sign-in" (click)="doLogin()"></button>
+        <button pButton type="button" label="Logout" icon="pi pi-sign-out" class="p-button-outlined"
+          (click)="doLogout()"></button>
+      </div>
+
+      <hr />
+
+      <div class="actions">
+        <button pButton type="button" label="+ 2 transacciones demo" icon="pi pi-plus"
+          (click)="seed2Transacciones()"></button>
+
+        <button pButton type="button" label="Wipe local (mw_*)" icon="pi pi-trash"
+          class="p-button-danger p-button-outlined" (click)="wipeLocal()"></button>
+      </div>
     </div>
 
     <div class="spacer"></div>
 
-    <!-- Debug: confirma que ngModel cambia -->
-    <div class="debug">
-      <div><strong>name:</strong> {{ name }}</div>
-      <div><strong>category:</strong> {{ selectedCategory }}</div>
-      <div><strong>date:</strong> {{ selectedDate | json }}</div>
-    </div>
+    <p-card header="Auth Snapshot">
+      <pre>{{ authSnapshot | json }}</pre>
+    </p-card>
+
+    <div class="spacer"></div>
+
+    <p-card header="Resumen Financiero Snapshot">
+      <pre>{{ resumenSnapshot | json }}</pre>
+    </p-card>
+
+    <div class="spacer"></div>
+
+    <p-card header="Transacciones Snapshot (orden desc por fecha)">
+      <pre>{{ transaccionesSnapshot | json }}</pre>
+    </p-card>
   </p-card>
-
-  <p-dialog
-    header="PrimeNG Dialog"
-    [(visible)]="showDialog"
-    [modal]="true"
-    [dismissableMask]="true"
-    [draggable]="false"
-    [resizable]="false"
-    [baseZIndex]="20000"
-    appendTo="body"
-    [style]="{ width: 'min(92vw, 420px)' }"
-  >
-    <p class="muted">Si esto aparece y puedes cerrarlo, overlays OK.</p>
-    <div class="spacer"></div>
-    <button pButton type="button" label="Cerrar" icon="pi pi-times" (click)="showDialog = false"></button>
-  </p-dialog>
 </ion-content>

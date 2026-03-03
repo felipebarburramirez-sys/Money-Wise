@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,6 +15,10 @@ import { MessageService } from 'primeng/api';
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
     ButtonModule,
     InputTextModule,
     SelectModule,
@@ -23,6 +29,10 @@ import { MessageService } from 'primeng/api';
     DividerModule,
   ],
   exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
     ButtonModule,
     InputTextModule,
     SelectModule,
