@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,24 +10,55 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class RegisterPage {
-  form = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4)]],
-  });
+  nombre = '';
+  email = '';
+  password = '';
+  loading = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private msg: MessageService
+  ) {}
 
-  async onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  async submit(): Promise<void> {
+    if (!this.nombre.trim() || !this.email.trim() || !this.password) {
+      this.msg.add({
+        severity: 'warn',
+        summary: 'Campos requeridos',
+        detail: 'Nombre, email y contraseña son obligatorios.',
+      });
       return;
     }
 
-    await this.router.navigateByUrl('/auth/login');
+    this.loading = true;
+
+    try {
+      await this.auth.register({
+        nombre: this.nombre,
+        email: this.email,
+        password: this.password,
+      });
+
+      this.msg.add({
+        severity: 'success',
+        summary: 'Registro',
+        detail: 'Usuario creado + sesión iniciada ✅',
+      });
+
+      await this.router.navigateByUrl('/tabs/dashboard', { replaceUrl: true });
+    } catch (e: any) {
+      this.msg.add({
+        severity: 'error',
+        summary: 'Registro',
+        detail: e?.message ?? 'Error al registrar',
+      });
+    } finally {
+      this.loading = false;
+    }
   }
 
-  goLogin() {
+  goLogin(): void {
     this.router.navigateByUrl('/auth/login');
   }
 }

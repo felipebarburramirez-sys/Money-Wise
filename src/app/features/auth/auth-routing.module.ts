@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
+import { GuestGuard } from '../../core/guards/guest.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  { path: 'login', component: LoginPage },
-  { path: 'register', component: RegisterPage },
+  { path: 'login', component: LoginPage, canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterPage, canActivate: [GuestGuard] },
 
   { path: '**', redirectTo: 'login' },
 ];
