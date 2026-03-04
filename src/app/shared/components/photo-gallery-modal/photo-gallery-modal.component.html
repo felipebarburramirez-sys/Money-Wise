@@ -1,0 +1,67 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '96vw', maxWidth: '640px' }"
+  (onHide)="close()"
+>
+  <ng-template pTemplate="header">
+    <div class="pg__header">
+      <div class="pg__title">
+        <h3>{{ title }}</h3>
+        <span *ngIf="fotos?.length">{{ activeIndex + 1 }} / {{ fotos.length }}</span>
+      </div>
+
+      <div class="pg__actions">
+        <button
+          *ngIf="deletable"
+          pButton
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-danger p-button-outlined"
+          label="Eliminar"
+          (click)="onRemoveActive()"
+          [disabled]="!fotos?.length"
+        ></button>
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="close()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="fotos?.length; else empty">
+    <p-galleria
+      [value]="fotos"
+      [(activeIndex)]="activeIndex"
+      [showThumbnails]="true"
+      [showItemNavigators]="true"
+      [circular]="true"
+      [numVisible]="5"
+      [containerStyle]="{ 'max-width': '100%' }"
+    >
+      <ng-template pTemplate="item" let-item>
+        <div class="pg__viewer">
+          <img [src]="item.webViewPath" alt="Comprobante" />
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="thumbnail" let-item>
+        <img class="pg__thumb" [src]="item.webViewPath" alt="thumb" />
+      </ng-template>
+    </p-galleria>
+  </ng-container>
+
+  <ng-template #empty>
+    <div class="pg__empty">
+      <p>No hay comprobantes aún.</p>
+    </div>
+  </ng-template>
+</p-dialog>

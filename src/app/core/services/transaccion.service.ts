@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { StorageService } from './storage.service';
 import { STORAGE_KEYS } from './storage.keys';
-import type { Transaccion } from '../models/transaccion.model';
+import type { Transaccion, ComprobanteFoto } from '../models/transaccion.model';
 import type { CategoriaKey } from '../constants/categorias.const';
 import type { TipoTransaccion } from '../constants/tipos-transaccion.const';
+import { FileSystemService } from './file-system.service';
 
 export type CreateTransaccionInput = {
   tipo: TipoTransaccion;
@@ -23,7 +24,7 @@ export class TransaccionService {
   private readonly list$ = new BehaviorSubject<Transaccion[]>([]);
   readonly transacciones$ = this.list$.asObservable();
 
-  constructor(private storage: StorageService) {}
+  constructor(private storage: StorageService, private fs: FileSystemService) {}
 
   async hydrate(): Promise<void> {
     const saved = (await this.storage.get<Transaccion[]>(STORAGE_KEYS.TRANSACCIONES)) ?? [];
@@ -49,6 +50,7 @@ export class TransaccionService {
       nota: input.nota?.trim() || undefined,
       createdAt: now,
       updatedAt: now,
+      comprobantes: [],
     };
 
     const next = this.sortDesc([tx, ...this.list()]);
@@ -76,8 +78,57 @@ export class TransaccionService {
   }
 
   async delete(id: string): Promise<void> {
+    const current = this.getById(id);
+    if (current?.comprobantes?.length) {
+      // borrar archivos asociados
+      for (const c of current.comprobantes) {
+        await this.fs.deleteFile(c.path);
+      }
+    }
     const next = this.list().filter((t) => t.id !== id);
     await this.persist(next);
+  }
+
+  async addComprobante(txId: string, saved: { path: string; webViewPath: string }): Promise<Transaccion> {
+    const current = this.getById(txId);
+    if (!current) throw new Error('Transacción no encontrada.');
+
+    const now = new Date().toISOString();
+    const comprobante: ComprobanteFoto = {
+      id: this.makeId(),
+      path: saved.path,
+      webViewPath: saved.webViewPath,
+      createdAt: now,
+    };
+
+    const updated: Transaccion = {
+      ...current,
+      comprobantes: [comprobante, ...(current.comprobantes ?? [])],
+      updatedAt: now,
+    };
+
+    const next = this.sortDesc(this.list().map((t) => (t.id === txId ? updated : t)));
+    await this.persist(next);
+    return updated;
+  }
+
+  async removeComprobante(txId: string, comprobanteId: string): Promise<Transaccion> {
+    const current = this.getById(txId);
+    if (!current) throw new Error('Transacción no encontrada.');
+
+    const target = (current.comprobantes ?? []).find((c) => c.id === comprobanteId);
+    if (target) await this.fs.deleteFile(target.path);
+
+    const now = new Date().toISOString();
+    const updated: Transaccion = {
+      ...current,
+      comprobantes: (current.comprobantes ?? []).filter((c) => c.id !== comprobanteId),
+      updatedAt: now,
+    };
+
+    const next = this.sortDesc(this.list().map((t) => (t.id === txId ? updated : t)));
+    await this.persist(next);
+    return updated;
   }
 
   private async persist(list: Transaccion[]): Promise<void> {

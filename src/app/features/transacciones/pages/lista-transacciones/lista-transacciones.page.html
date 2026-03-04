@@ -60,14 +60,20 @@
           <div class="left" (click)="goDetalle(t)" role="button" tabindex="0">
             <div class="top">
               <span class="tag" [class.in]="t.tipo === 'INGRESO'" [class.out]="t.tipo === 'GASTO'">
-                {{ t.tipo }}
+                {{ t.tipo | tipoLabel }}
               </span>
-              <span class="monto">{{ t.monto | number:'1.0-0' }}</span>
+
+              <span class="monto" [class.in]="t.tipo === 'INGRESO'" [class.out]="t.tipo === 'GASTO'">
+                {{ t.monto | moneyCop:t.tipo }}
+              </span>
             </div>
 
             <div class="sub">
-              {{ t.categoria }} • {{ t.fecha | date:'mediumDate' }}
+              {{ t.categoria | categoriaLabel }} • {{ t.fecha | dateEs }}
               <span *ngIf="t.nota">• {{ t.nota }}</span>
+              <ng-container *ngIf="t.comprobantes as fotos">
+                <span *ngIf="fotos.length > 0"> • {{ fotos.length }} foto(s)</span>
+              </ng-container>
             </div>
           </div>
 

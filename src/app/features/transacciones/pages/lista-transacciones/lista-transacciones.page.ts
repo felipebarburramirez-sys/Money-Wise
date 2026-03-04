@@ -60,7 +60,6 @@ export class ListaTransaccionesPage implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // AppComponent ya hidrata, pero esto hace la página robusta si entras directo
     await this.tx.hydrate();
     this.refresh();
   }
@@ -68,6 +67,14 @@ export class ListaTransaccionesPage implements OnInit {
   refresh(): void {
     this.all = this.tx.list();
     this.applyFilters();
+  }
+
+  private getTipoLabel(tipo: TipoTransaccion): string {
+    return TIPOS_TRANSACCION.find((t) => t.value === tipo)?.label ?? String(tipo);
+  }
+
+  private getCategoriaLabel(cat: CategoriaKey): string {
+    return CATEGORIAS.find((c) => c.key === cat)?.label ?? String(cat);
   }
 
   applyFilters(): void {
@@ -80,13 +87,18 @@ export class ListaTransaccionesPage implements OnInit {
       if (!q) return true;
 
       const note = (t.nota ?? '').toLowerCase();
-      const tipo = (t.tipo ?? '').toLowerCase();
-      const cat = (t.categoria ?? '').toLowerCase();
+      const tipoRaw = (t.tipo ?? '').toLowerCase();
+      const catRaw = (t.categoria ?? '').toLowerCase();
+
+      const tipoLabel = this.getTipoLabel(t.tipo).toLowerCase();
+      const catLabel = this.getCategoriaLabel(t.categoria).toLowerCase();
 
       return (
         note.includes(q) ||
-        tipo.includes(q) ||
-        cat.includes(q) ||
+        tipoRaw.includes(q) ||
+        catRaw.includes(q) ||
+        tipoLabel.includes(q) ||
+        catLabel.includes(q) ||
         String(t.monto).includes(q)
       );
     });

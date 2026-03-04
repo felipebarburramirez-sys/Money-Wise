@@ -1,0 +1,5 @@
+<div class="pp">
+  <img [src]="foto.webViewPath" alt="Comprobante" />
+  <button *ngIf="deletable" pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-rounded pp__del"
+          (click)="onRemove()"></button>
+</div>

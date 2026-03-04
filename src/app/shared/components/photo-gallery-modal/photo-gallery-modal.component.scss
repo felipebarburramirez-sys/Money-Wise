@@ -1,0 +1,59 @@
+.pg__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pg__title {
+  display: grid;
+  gap: 2px;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  span {
+    font-size: 12px;
+    opacity: 0.75;
+  }
+}
+
+.pg__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg__viewer {
+  width: 100%;
+  height: 52vh;
+  max-height: 520px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.06);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.pg__thumb {
+  width: 100%;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.pg__empty {
+  padding: 10px 2px;
+  opacity: 0.75;
+}

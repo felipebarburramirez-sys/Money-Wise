@@ -15,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { GalleriaModule } from 'primeng/galleria';
 
 import { MessageService } from 'primeng/api';
 
@@ -23,6 +24,7 @@ import { MessageService } from 'primeng/api';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
     ProgressBarModule,
     ButtonModule,
     InputTextModule,
@@ -35,11 +37,13 @@ import { MessageService } from 'primeng/api';
     ConfirmDialogModule,
     InputNumberModule,
     TextareaModule,
+    GalleriaModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
     ProgressBarModule,
     ButtonModule,
     InputTextModule,
@@ -52,6 +56,7 @@ import { MessageService } from 'primeng/api';
     ConfirmDialogModule,
     InputNumberModule,
     TextareaModule,
+    GalleriaModule,
   ],
   providers: [MessageService, ConfirmationService],
 })
