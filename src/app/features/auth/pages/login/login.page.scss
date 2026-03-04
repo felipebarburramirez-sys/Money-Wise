@@ -1,5 +1,134 @@
+:host {
+  display: block;
+}
+
+.auth {
+  --background: radial-gradient(1200px 600px at 20% 10%, rgba(76, 175, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, rgba(170, 90, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(10, 10, 14, 0.02), rgba(10, 10, 14, 0.04));
+}
+
+.auth__wrap {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.auth__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.auth__brandText {
+  h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 2px 0 0;
+    opacity: 0.8;
+    font-size: 13px;
+  }
+}
+
+.auth__card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.auth__cardHeader {
+  padding: 14px 14px 0;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  span {
+    display: block;
+    margin-top: 2px;
+    opacity: 0.75;
+    font-size: 13px;
+  }
+}
+
+.auth__form {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    opacity: 0.85;
+    font-weight: 600;
+  }
+}
+
 ion-note {
   display: block;
-  margin-left: 16px;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.invalid {
+  border-color: var(--ion-color-danger) !important;
+}
+
+.password {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.password__toggle {
+  width: 42px;
+  height: 42px;
+}
+
+.auth__actions {
+  display: grid;
+  gap: 10px;
   margin-top: 6px;
+
+  button {
+    width: 100%;
+  }
+}
+
+.auth__foot {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.7;
 }

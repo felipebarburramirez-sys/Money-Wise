@@ -1,47 +1,109 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Registro</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
+<ion-content class="auth ion-padding" [fullscreen]="true">
   <p-toast appendTo="body"></p-toast>
 
-  <p-card header="Crear cuenta">
-    <div class="form">
-      <div class="field">
-        <label>Nombre</label>
-        <input pInputText type="text" [(ngModel)]="nombre" placeholder="Tu nombre" />
+  <div class="auth__wrap">
+    <div class="auth__brand">
+      <div class="auth__logo">
+        <ion-icon name="person-add-outline"></ion-icon>
       </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input pInputText type="email" [(ngModel)]="email" placeholder="correo@mail.com" />
-      </div>
-
-      <div class="field">
-        <label>Contraseña</label>
-        <input pInputText type="password" [(ngModel)]="password" placeholder="••••••••" />
-      </div>
-
-      <div class="actions">
-        <button
-          pButton
-          type="button"
-          label="{{ loading ? 'Creando...' : 'Crear' }}"
-          icon="pi pi-user-plus"
-          [disabled]="loading"
-          (click)="submit()"
-        ></button>
-
-        <button
-          pButton
-          type="button"
-          label="Ya tengo cuenta"
-          class="p-button-outlined"
-          (click)="goLogin()"
-        ></button>
+      <div class="auth__brandText">
+        <h1>Crear cuenta</h1>
+        <p>Tu dinero merece orden ✨</p>
       </div>
     </div>
-  </p-card>
+
+    <p-card styleClass="auth__card">
+      <ng-template pTemplate="header">
+        <div class="auth__cardHeader">
+          <h2>Registro</h2>
+          <span>Completa tus datos</span>
+        </div>
+      </ng-template>
+
+      <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label>Nombre</label>
+          <input
+            pInputText
+            type="text"
+            formControlName="nombre"
+            placeholder="Tu nombre"
+            [class.invalid]="f.nombre.touched && f.nombre.invalid"
+            autocomplete="name"
+          />
+          <ion-note color="danger" *ngIf="f.nombre.touched && f.nombre.invalid">
+            <span *ngIf="f.nombre.errors?.['required']">El nombre es obligatorio.</span>
+            <span *ngIf="f.nombre.errors?.['minlength']">Mínimo 2 caracteres.</span>
+          </ion-note>
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input
+            pInputText
+            type="email"
+            formControlName="email"
+            placeholder="correo@mail.com"
+            [class.invalid]="f.email.touched && f.email.invalid"
+            autocomplete="email"
+          />
+          <ion-note color="danger" *ngIf="f.email.touched && f.email.invalid">
+            <span *ngIf="f.email.errors?.['required']">El email es obligatorio.</span>
+            <span *ngIf="f.email.errors?.['email']">Formato de email inválido.</span>
+          </ion-note>
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+
+          <div class="password">
+            <input
+              pInputText
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.invalid]="f.password.touched && f.password.invalid"
+              autocomplete="new-password"
+            />
+            <button
+              pButton
+              type="button"
+              class="p-button-text password__toggle"
+              [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+              (click)="togglePassword()"
+              [disabled]="loading"
+            ></button>
+          </div>
+
+          <ion-note color="danger" *ngIf="f.password.touched && f.password.invalid">
+            <span *ngIf="f.password.errors?.['required']">La contraseña es obligatoria.</span>
+            <span *ngIf="f.password.errors?.['minlength']">Mínimo 4 caracteres.</span>
+          </ion-note>
+        </div>
+
+        <div class="auth__actions">
+          <button
+            pButton
+            type="submit"
+            [label]="loading ? 'Creando...' : 'Crear cuenta'"
+            icon="pi pi-user-plus"
+            [disabled]="loading"
+          ></button>
+
+          <button
+            pButton
+            type="button"
+            label="Ya tengo cuenta"
+            class="p-button-outlined"
+            (click)="goLogin()"
+            [disabled]="loading"
+          ></button>
+        </div>
+      </form>
+    </p-card>
+
+    <p class="auth__foot">
+      Registro simulado: persistimos en local y quedas autenticado.
+    </p>
+  </div>
 </ion-content>

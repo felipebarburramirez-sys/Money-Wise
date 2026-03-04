@@ -1,19 +1,20 @@
 <ion-tabs>
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="dashboard" [routerLink]="['/tabs/dashboard']">
+  <ion-tab-bar slot="bottom" class="gg-tabbar">
+    <ion-tab-button tab="dashboard" [routerLink]="['/tabs/dashboard']" class="gg-tab">
       <ion-icon name="speedometer-outline"></ion-icon>
       <ion-label>Dashboard</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="transacciones" [routerLink]="['/tabs/transacciones']">
+    <ion-tab-button tab="transacciones" [routerLink]="['/tabs/transacciones']" class="gg-tab">
       <ion-icon name="list-outline"></ion-icon>
       <ion-label>Transacciones</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="playground" [routerLink]="['/tabs/playground']">
+    <ion-tab-button tab="playground" [routerLink]="['/tabs/playground']" class="gg-tab">
       <ion-icon name="color-palette-outline"></ion-icon>
       <ion-label>UI</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
+
 </ion-tabs>

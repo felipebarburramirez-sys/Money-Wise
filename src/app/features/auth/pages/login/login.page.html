@@ -1,42 +1,93 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
+<ion-content class="auth ion-padding" [fullscreen]="true">
   <p-toast appendTo="body"></p-toast>
 
-  <p-card header="Iniciar sesión">
-    <div class="form">
-      <div class="field">
-        <label>Email</label>
-        <input pInputText type="email" [(ngModel)]="email" placeholder="correo@mail.com" />
+  <div class="auth__wrap">
+    <div class="auth__brand">
+      <div class="auth__logo">
+        <ion-icon name="wallet-outline"></ion-icon>
       </div>
-
-      <div class="field">
-        <label>Contraseña</label>
-        <input pInputText type="password" [(ngModel)]="password" placeholder="••••••••" />
-      </div>
-
-      <div class="actions">
-        <button
-          pButton
-          type="button"
-          label="{{ loading ? 'Entrando...' : 'Entrar' }}"
-          icon="pi pi-sign-in"
-          [disabled]="loading"
-          (click)="submit()"
-        ></button>
-
-        <button
-          pButton
-          type="button"
-          label="Crear cuenta"
-          class="p-button-outlined"
-          (click)="goRegister()"
-        ></button>
+      <div class="auth__brandText">
+        <h1>MoneyWise</h1>
+        <p>Controla tus gastos sin dolor 😌</p>
       </div>
     </div>
-  </p-card>
+
+    <p-card styleClass="auth__card">
+      <ng-template pTemplate="header">
+        <div class="auth__cardHeader">
+          <h2>Iniciar sesión</h2>
+          <span>Bienvenido de vuelta</span>
+        </div>
+      </ng-template>
+
+      <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label>Email</label>
+          <input
+            pInputText
+            type="email"
+            formControlName="email"
+            placeholder="correo@mail.com"
+            [class.invalid]="f.email.touched && f.email.invalid"
+            autocomplete="email"
+          />
+          <ion-note color="danger" *ngIf="f.email.touched && f.email.invalid">
+            <span *ngIf="f.email.errors?.['required']">El email es obligatorio.</span>
+            <span *ngIf="f.email.errors?.['email']">Formato de email inválido.</span>
+          </ion-note>
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+
+          <div class="password">
+            <input
+              pInputText
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.invalid]="f.password.touched && f.password.invalid"
+              autocomplete="current-password"
+            />
+            <button
+              pButton
+              type="button"
+              class="p-button-text password__toggle"
+              [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+              (click)="togglePassword()"
+              [disabled]="loading"
+            ></button>
+          </div>
+
+          <ion-note color="danger" *ngIf="f.password.touched && f.password.invalid">
+            <span *ngIf="f.password.errors?.['required']">La contraseña es obligatoria.</span>
+            <span *ngIf="f.password.errors?.['minlength']">Mínimo 4 caracteres.</span>
+          </ion-note>
+        </div>
+
+        <div class="auth__actions">
+          <button
+            pButton
+            type="submit"
+            [label]="loading ? 'Entrando...' : 'Entrar'"
+            icon="pi pi-sign-in"
+            [disabled]="loading"
+          ></button>
+
+          <button
+            pButton
+            type="button"
+            label="Crear cuenta"
+            class="p-button-outlined"
+            (click)="goRegister()"
+            [disabled]="loading"
+          ></button>
+        </div>
+      </form>
+    </p-card>
+
+    <p class="auth__foot">
+      Tip: usa cualquier email válido y una contraseña no vacía (auth simulada).
+    </p>
+  </div>
 </ion-content>
